@@ -26,9 +26,9 @@ const char VOCs[] = "VOCs:";
 #define NUMPIXELS 1
 
 // DateTime information
-const int daylightOffset_sec = 3600;
-const int gmtOffset_sec = 3600;
-const char* ntpServer = "pool.ntp.org";
+struct tm lt;         
+struct tm utc;
+const char* ntpServer = "europe.pool.ntp.org";
 struct tm timeinfo;
 
 // Timer variables (send new readings every three minutes)
@@ -81,7 +81,7 @@ void setup() {
     while(1);
   }
   // Get config time based on NTP server
-  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  configTime("CET-1CEST,M3.5.0,M10.5.0/3", ntpServer);
   // Setup Display
   display.init();
   display_setup();
@@ -140,25 +140,17 @@ void loop() {
     Serial.println("Failed to obtain time");
     return;
   }
+  time_t now = time(&now);
+  localtime_r(&now, &lt);
+  gmtime_r(&now, &utc);
   updateDate(timeinfo);
   updateAirQuality(eco2, etvoc);
   updateEnvironment(temperature);
   if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0)){
     sendDataPrevMillis = millis();
-    char timeHour[3];
-    strftime(timeHour,3, "%H", &timeinfo);
-    char timeMinute[3];
-    strftime(timeMinute,3, "%M", &timeinfo);
-    char timeSeconds[3];
-    strftime(timeSeconds,3, "%S", &timeinfo);
-    char dateDay[3];
-    strftime(dateDay,3, "%d", &timeinfo);
-    char dateMonth[3];
-    strftime(dateMonth,3, "%m", &timeinfo);
-    char dateYear[5];
-    strftime(dateYear,5, "%Y", &timeinfo);
-    timeStamp= String(dateDay)+"."+String(dateMonth)+"."+String(dateYear)+" "+String(timeHour)+":"+String(timeMinute)+":"+String(timeSeconds);
-
+    static char buf[30];
+    strftime (buf, sizeof(buf), "%d.%m.%Y %T", &utc); 
+    timeStamp= String(buf);
 
     parentPath= databasePath + "/" + timeStamp;
 
@@ -168,6 +160,9 @@ void loop() {
     json.set(timePath, timeStamp);
     Serial.printf("Set json... %s\n", Firebase.RTDB.setJSON(&fbdo, parentPath.c_str(), &json) ? "ok" : fbdo.errorReason().c_str());
   }
+  if (!(time(&now) % 86400)) {                          // einmal am Tag die Zeit vom NTP Server holen o. jede Stunde "% 3600" aller zwei "% 7200"
+    configTime("CET-1CEST,M3.5.0,M10.5.0/3", ntpServer);  
+    }
   delay(1000);
 }
 
