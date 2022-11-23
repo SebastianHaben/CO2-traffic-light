@@ -70,12 +70,21 @@ __Neopixel__
 ### Code set-up and how to create a Firebase account
 To run the project several things, need to be changed before flashing the code to the D1 mini. To save our data in the Google Firebase Realtime Database we first need to create a project in Google Firebase, create a new Realtime Database, grab the API-Key of the project and the database-URL as well as create the authentication via an e-mail address/ pass word combination. This handy tutorial will help you through each step of [setting up everything on Firebase.](https://randomnerdtutorials.com/esp8266-data-logging-firebase-realtime-database/)
 After you have gathered all the required information you need to update the firebase-credentials.h file.
+
 ---
+### Setting the correct time zone
+To have the correct date and time displayed we need to set the correct time zone. This is done in line 84. To choose your correct time zone find your region and city in [this table](https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv) and replace the String with the corresponding string for your location.
+
+---
+
+### First start-up
+After you have adjusted the code and the credentials you can flash it on the D1 mini. The final step is to connect the D1 mini to your WiFi. For this connect with your smartphone or tablet to the network “AutoConnectAP” and on the resulting page (if not forwarded automatically type 192.168.4.1 into your browser) find your WiFi’s SSID from the list and enter your password. The D1 mini should restart automatically and will connect to the WiFi. The credentials are stored on the D1 mini and are still available after a loss of power.
+
+---
+
 ### Laser-cut Housing
 I built this enclosure from 6mm birch MDF which might be also the new home for your own CO2 traffic light. I personally don’t own a laser cutter but online you can find shops that will cut the pieces for you at competitive rates. To place the project into the housing I soldered the sensors and the D1 mini onto a small perfboard.
 
-  ![Front view of assembled PCB](/assests/PCB_assembly_front.JPG)
-  
-  ![Back view of assembled PCB](/assests/PCB_assembly_back.JPG)
-  
-  ![PCB & Display attached to housing](/assests/project_in_housing.jpg)
+  ![Front view PCB assembly](/assets/PCB_assembly_front.JPG)
+  ![Back view PCB assembly](/assets/PCB_assembly_back.JPG)
+  ![Project in Housing](/assets/project_in_housing.jpg)
