@@ -16,6 +16,7 @@ The CO2 traffic light can help you to know when it is time to let some fresh air
 -	Measuring of temperature, eCO2 and VOC concentration in room air
 -	Display of data as well as time and date (incl. correct time zone and daylight-saving time) on an e-Paper display.
 -	Upload Data to a Google Firebase Realtime Database for analysis of historic trends
+---
 ## Required Parts
 -	Wemos LOLIN D1 mini
 -	Adafruit CSS811 air quality sensor
@@ -67,11 +68,13 @@ The connections are done according to the breadboard view. In addition, a small 
 |DIN|D4|
 ---
 ## Code set-up and how to create a Firebase account
-To run the project several things, need to be changed before flashing the code to the D1 mini. To save our data in the Google Firebase Realtime Database we first need to create a project in Google Firebase, create a new Realtime Database, grab the API-Key of the project and the database-URL as well as create the authentication via an e-mail address/ password combination. This handy tutorial will help you through each step of setting up everything on Firebase:   (https://randomnerdtutorials.com/esp8266-data-logging-firebase-realtime-database/)
+
+To run the project several things, need to be changed before flashing the code to the D1 mini. To save our data in the Google Firebase Realtime Database we first need to create a project in Google Firebase, create a new Realtime Database, grab the API-Key of the project and the database-URL as well as create the authentication via an e-mail address/ password combination. This handy tutorial will help you through each step of setting up everything on Firebase:   (<https://randomnerdtutorials.com/esp8266-data-logging-firebase-realtime-database/>)
 After you have gathered all the required information you need to update the firebase-credentials.h file.
 ---
 ## Setting the correct time zone
-To have the correct date and time displayed we need to set the correct time zone. This is done in line 84. To choose your correct time zone find your region and city in this table: (https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv) and replace the String with the corresponding string for your location.
+
+To have the correct date and time displayed we need to set the correct time zone. This is done in line 84. To choose your correct time zone find your region and city in this table: (<https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv>) and replace the String with the corresponding string for your location.
 ---
 ## First start-up
 After you have adjusted the code and the credentials you can flash it on the D1 mini. The final step is to connect the D1 mini to your WiFi. For this connect with your smartphone or tablet to the network “AutoConnectAP” and on the resulting page (if not forwarded automatically type 192.168.4.1 into your browser) find your WiFi’s SSID from the list and enter your password. The D1 mini should restart automatically and will connect to the WiFi. The credentials are stored on the D1 mini and are still available after a loss of power.
